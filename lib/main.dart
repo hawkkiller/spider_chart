@@ -17,16 +17,18 @@ class MainApp extends StatelessWidget {
             width: 300,
             height: 300,
             child: SpiderChart(
-              labels: const [
-                'Label 1',
-                'Label 2',
-                'Label 3',
-                'Label 4',
-                'Label 5',
-              ],
+              labels: List.generate(
+                4,
+                (index) => SpiderChartLabel(
+                  label: 'V$index',
+                  style: const TextStyle(
+                    color: Color(0xff2b2d27),
+                    fontSize: 12,
+                  ),
+                ),
+              ),
               options: SpiderChartOptions(
                 maxValue: 5,
-                labelStyle: const TextStyle(color: Colors.black),
                 gridColor: const Color(0xff2b2d27).withOpacity(.24),
                 borderColor: const Color(0xff2b2d27).withOpacity(.24),
               ),
@@ -39,8 +41,7 @@ class MainApp extends StatelessWidget {
                     const SpiderChartPoint(value: 1),
                     const SpiderChartPoint(value: 2),
                     const SpiderChartPoint(value: 3),
-                    const SpiderChartPoint(value: 4),
-                    const SpiderChartPoint(value: 5),
+                    const SpiderChartPoint(value: 3),
                   ],
                 ),
                 SpiderChartItem(
@@ -52,7 +53,6 @@ class MainApp extends StatelessWidget {
                     const SpiderChartPoint(value: 3),
                     const SpiderChartPoint(value: 4),
                     const SpiderChartPoint(value: 1),
-                    const SpiderChartPoint(value: 2),
                   ],
                 ),
               ],

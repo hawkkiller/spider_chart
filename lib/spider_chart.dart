@@ -15,6 +15,18 @@ class SpiderChartItem {
   final Color borderColor;
 }
 
+class SpiderChartLabel {
+  const SpiderChartLabel({
+    required this.label,
+    this.style = const TextStyle(color: Colors.black, fontSize: 12),
+    this.maxWidth = double.infinity,
+  });
+
+  final String label;
+  final TextStyle style;
+  final double maxWidth;
+}
+
 class SpiderChartPoint {
   const SpiderChartPoint({
     required this.value,
@@ -24,8 +36,6 @@ class SpiderChartPoint {
 }
 
 class SpiderChartOptions {
-  final TextStyle labelStyle;
-
   /// Color of inner lines
   final Color gridColor;
 
@@ -37,7 +47,6 @@ class SpiderChartOptions {
 
   const SpiderChartOptions({
     this.maxValue = 5,
-    this.labelStyle = const TextStyle(color: Colors.black),
     this.gridColor = Colors.grey,
     this.borderColor = Colors.grey,
   });
@@ -45,7 +54,7 @@ class SpiderChartOptions {
 
 class SpiderChart extends StatelessWidget {
   final List<SpiderChartItem> data;
-  final List<String>? labels;
+  final List<SpiderChartLabel>? labels;
   final SpiderChartOptions options;
 
   const SpiderChart({
@@ -67,7 +76,7 @@ class SpiderChart extends StatelessWidget {
 
 class SpiderChartRender extends CustomPainter {
   final List<SpiderChartItem> data;
-  final List<String>? labels;
+  final List<SpiderChartLabel>? labels;
   final SpiderChartOptions options;
 
   SpiderChartRender({
@@ -92,7 +101,25 @@ class SpiderChartRender extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.shortestSide / 2;
+    final labelPainters = labels?.map((label) {
+      final textPainter = TextPainter(
+        text: TextSpan(text: label.label, style: label.style),
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: label.maxWidth);
+      return textPainter;
+    }).toList();
+
+    var radius = size.shortestSide / 2;
+
+    // adjust radius based on labels, so that labels are not cut off
+    if (labels != null) {
+      final maxLabelWidth = labelPainters!.map((e) => e.width).reduce(math.max);
+      final maxLabelHeight = labelPainters.map((e) => e.height).reduce(math.max);
+      final maxLabelSize = math.max(maxLabelWidth, maxLabelHeight);
+      final maxLabelRadius = radius - maxLabelSize - 10;
+      radius = math.min(radius, maxLabelRadius);
+    }
+
     // Angle between vertices of the polygon
     final angle = 2 * math.pi / data.first.points.length;
 
@@ -111,13 +138,7 @@ class SpiderChartRender extends CustomPainter {
       }
 
       if (labels != null) {
-        final textPainter = TextPainter(
-          text: TextSpan(
-            text: labels![i],
-            style: options.labelStyle,
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
+        final textPainter = labelPainters![i];
         final textX =
             center.dx + (radius + textPainter.width / 2 + 10) * math.cos(i * angle - math.pi / 2);
         final textY =
