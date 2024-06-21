@@ -100,6 +100,7 @@ class SpiderChartRender extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    const paddingFromVertex = 5;
     final center = Offset(size.width / 2, size.height / 2);
     final labelPainters = labels?.map((label) {
       final textPainter = TextPainter(
@@ -116,7 +117,7 @@ class SpiderChartRender extends CustomPainter {
       final maxLabelWidth = labelPainters!.map((e) => e.width).reduce(math.max);
       final maxLabelHeight = labelPainters.map((e) => e.height).reduce(math.max);
       final maxLabelSize = math.max(maxLabelWidth, maxLabelHeight);
-      final maxLabelRadius = radius - maxLabelSize - 10;
+      final maxLabelRadius = radius - maxLabelSize - paddingFromVertex;
       radius = math.min(radius, maxLabelRadius);
     }
 
@@ -140,9 +141,9 @@ class SpiderChartRender extends CustomPainter {
       if (labels != null) {
         final textPainter = labelPainters![i];
         final textX =
-            center.dx + (radius + textPainter.width / 2 + 10) * math.cos(i * angle - math.pi / 2);
+            center.dx + (radius + textPainter.width / 2 + paddingFromVertex) * math.cos(i * angle - math.pi / 2);
         final textY =
-            center.dy + (radius + textPainter.height / 2 + 5) * math.sin(i * angle - math.pi / 2);
+            center.dy + (radius + textPainter.height / 2 + paddingFromVertex) * math.sin(i * angle - math.pi / 2);
         textPainter.paint(
           canvas,
           Offset(textX - textPainter.width / 2, textY - textPainter.height / 2),
