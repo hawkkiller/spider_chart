@@ -45,10 +45,14 @@ class SpiderChartOptions {
   /// Minimum value of the chart
   final double maxValue;
 
+  /// Whether to adjust the radius of the chart to fit the labels
+  final bool adjustRadius;
+
   const SpiderChartOptions({
     this.maxValue = 5,
     this.gridColor = Colors.grey,
     this.borderColor = Colors.grey,
+    this.adjustRadius = true,
   });
 }
 
@@ -113,7 +117,7 @@ class SpiderChartRender extends CustomPainter {
     var radius = size.shortestSide / 2;
 
     // adjust radius based on labels, so that labels are not cut off
-    if (labels != null) {
+    if (labels != null && options.adjustRadius) {
       final maxLabelWidth = labelPainters!.map((e) => e.width).reduce(math.max);
       final maxLabelHeight = labelPainters.map((e) => e.height).reduce(math.max);
       final maxLabelSize = math.max(maxLabelWidth, maxLabelHeight);
