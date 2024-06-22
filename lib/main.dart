@@ -10,17 +10,26 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final labels = [
+      '123123',
+      '112312312323',
+      '112321312323',
+      '123',
+      '123',
+    ];
+
     return MaterialApp(
       home: Scaffold(
         body: Center(
           child: SizedBox(
-            width: 300,
-            height: 300,
+            width: 400,
+            height: 220,
             child: SpiderChart(
               labels: List.generate(
-                4,
+                5,
                 (index) => SpiderChartLabel(
-                  label: 'V$index',
+                  label: labels[index],
+                  // maxWidth: 90,
                   style: const TextStyle(
                     color: Color(0xff2b2d27),
                     fontSize: 12,
@@ -42,6 +51,7 @@ class MainApp extends StatelessWidget {
                     const SpiderChartPoint(value: 2),
                     const SpiderChartPoint(value: 3),
                     const SpiderChartPoint(value: 3),
+                    const SpiderChartPoint(value: 3),
                   ],
                 ),
                 SpiderChartItem(
@@ -52,6 +62,7 @@ class MainApp extends StatelessWidget {
                     const SpiderChartPoint(value: 2),
                     const SpiderChartPoint(value: 3),
                     const SpiderChartPoint(value: 4),
+                    const SpiderChartPoint(value: 1),
                     const SpiderChartPoint(value: 1),
                   ],
                 ),
