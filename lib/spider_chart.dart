@@ -114,11 +114,6 @@ class SpiderChartRender extends CustomPainter {
       return textPainter;
     }).toList();
 
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()..color = Colors.black.withOpacity(.1),
-    );
-
     var radius = size.shortestSide / 2;
     // Angle between vertices of the polygon
     final angle = 2 * math.pi / data.first.points.length;
